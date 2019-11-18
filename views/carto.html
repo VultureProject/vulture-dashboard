@@ -1,0 +1,39 @@
+{% extends 'base/layout.html' %}
+
+{% block config %}
+    {% include 'config/config_carto.html' %}
+    {% include 'config/filter.html' %}
+    {% include 'config/group.html' %}
+{% endblock %}
+
+{% block content %}
+
+    <div id="page-content">
+        {% include "search.html" %}
+        <div class="row" id="vue-page">
+            <div class="col-md-12">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="graph" id="chart-carto" style="width:100%;height:1000px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>       
+    </div>
+
+{% endblock %}
+
+{% block css_include %}
+
+{% endblock %}
+
+{% block js_include %}
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/carto.js"></script>
+{% endblock %}
+
+{% block jquery_code %}
+
+{% endblock %}
+
+
