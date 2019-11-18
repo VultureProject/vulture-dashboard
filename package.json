@@ -24,8 +24,5 @@
     "swig": "^1.4.2",
     "uuid": "^3.3.3"
   },
-  "devDependencies": {
-    "express-reload": "^1.2.0",
-    "nodemon": "^1.19.4"
-  }
+  "devDependencies": {}
 }
