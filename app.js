@@ -23,12 +23,21 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io');
 
+
+var redis_config = {};
+if (app_settings.redis_use_socket){
+    redis_config.path = app_settings.redis_socket;
+} else {
+    redis_config.host = app_settings.redis_host;
+    redis_config.port = app_settings.redis_port;
+}
+
 const redis = require('redis');
-const redisClient = redis.createClient(app_settings.redis_port, app_settings.redis_host);
+const redisClient = redis.createClient(redis_config);
 const redisStore = require('connect-redis')(session);
 const uuid = require('uuid/v4');
 
-app.use(logger('dev'));
+app.use(logger(app_settings.log_level));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -52,6 +61,17 @@ const logsRouter = require('./routes/logs')(io_logs);
 const alertsRouter = require('./routes/alerts')(io_alerts);
 const configRouter = require('./routes/config')();
 
+var redis_store_config = {
+    client: redisClient,
+    ttl: 86400
+}
+/*if (app_settings.redis_use_socket){
+    redis_store_config.path = app_settings.redis_socket;
+} else {
+    redis_store_config.host = app_settings.redis_host;
+    redis_store_config.port = app_settings.redis_port;
+}*/
+
 const sessionMiddleware = session({
     genid: (req) => {
         return uuid() // use UUIDs for session IDs
@@ -60,12 +80,7 @@ const sessionMiddleware = session({
     resave: true,
     saveUninitialized: true,
     cookie: {secure: false},
-    store: new redisStore({
-        host: app_settings.redis_host,
-        port: app_settings.redis_port,
-        client: redisClient,
-        ttl: 86400
-    }),
+    store: new redisStore(redis_store_config),
 })
 
 app.use(sessionMiddleware)

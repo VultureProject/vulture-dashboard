@@ -1,10 +1,11 @@
 
 var settings = {
-    number_of_nodes: 100,
+	log_level: "dev",
     redis_port: 6379,
+    number_of_nodes: 100,
     redis_socket: "/var/sockets/redis/redis.sock",
-    redis_use_socket: true,
-    redis_host: "",
+    redis_use_socket: false,
+    redis_host: "10.59.10.250cd ..",
     impcap_publisher: "vlt.rsyslog.impcap",
     stats_publisher: "vlt.rsyslog.stats",
     darwin_alerts_publisher: "",

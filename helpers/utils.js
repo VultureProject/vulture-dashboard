@@ -64,8 +64,8 @@ exports.get_redis_subscriber = function(){
     if (app_settings.redis_use_socket){
         config.path = app_settings.redis_socket;
     } else {
-        config.host = app_settings.redis_host,
-        config.port = app_settings.redis_port
+        config.host = app_settings.redis_host;
+        config.port = app_settings.redis_port;
     }
 
     return redis.createClient(config);
