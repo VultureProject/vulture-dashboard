@@ -40,9 +40,7 @@ exports.format_ctx = function(message, is_src){
 }
 
 exports.get_redis_subscriber = function(){
-    return redis.createClient({
-        host: app_settings.redis_host,
-        port: app_settings.redis_port,
+    var config = {
         retry_strategy: function (options) {
             if (options.error && options.error.code === 'ECONNREFUSED') {
                 // End reconnecting on a specific error and flush all commands with
@@ -62,7 +60,15 @@ exports.get_redis_subscriber = function(){
             return Math.min(options.attempt * 100, 3000);
         }
     }
-    )
+
+    if (app_settings.redis_use_socket){
+        config.path = app_settings.redis_socket;
+    } else {
+        config.host = app_settings.redis_host,
+        config.port = app_settings.redis_port
+    }
+
+    return redis.createClient(config);
 }
 
 exports.apply_filter = function(message, filter){
