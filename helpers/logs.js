@@ -29,6 +29,7 @@ exports.logs_socket = function(socket){
     redis_subscriber_impcap.subscribe(app_settings.impcap_publisher);
 
     socket.on('disconnect', function(data){
+        console.log('Disconnected from logs')
         redis_subscriber_impcap.unsubscribe(app_settings.impcap_publisher)
     })
 }

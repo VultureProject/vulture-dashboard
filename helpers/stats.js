@@ -3,12 +3,12 @@ const helper = require('./utils');
 const moment = require('moment');
 const redis = require('redis');
 
-
 exports.stats_socket = function(socket){
     var redis_subscriber_stats = helper.get_redis_subscriber();
     var queues = {};
     var queues_name = [];
     var last_restart = 0;
+    var max_memory_used = 0;
 
     redis_subscriber_stats.on('message', function(channel, message){
         try{
@@ -29,7 +29,15 @@ exports.stats_socket = function(socket){
             var date_str = date_now.format("DD/MM/YYYY HH:mm:ss")
 
             var msg = message.stat;
-            if (msg.origin === "core.queue" && msg.name.startsWith('ruleset_')){
+
+            if (msg.name === "resource-usage"){
+                if (max_memory_used < msg.maxrss){
+                    max_memory_used = msg.maxrss;
+                    socket.emit('max_memory_used', {
+                        max: max_memory_used
+                    })
+                }
+            } else if (msg.origin === "core.queue" && msg.name.startsWith('ruleset_')){
                 var queue_name = msg.name.replace('ruleset_', '');
 
                 if (queues_name.indexOf(queue_name) === -1){
@@ -91,6 +99,7 @@ exports.stats_socket = function(socket){
     redis_subscriber_stats.subscribe(app_settings.stats_publisher);
 
     socket.on('disconnect', function(data){
+        console.log('Disconnected from stats')
         redis_subscriber_stats.unsubscribe(app_settings.stats_publisher)
     })
 }

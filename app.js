@@ -14,6 +14,7 @@ const cartoHelper = require('./helpers/carto');
 const logsHelper = require('./helpers/logs');
 const statsHelper = require('./helpers/stats');
 const mapsHelper = require('./helpers/maps');
+const alertsHelper = require('./helpers/alerts');
 const sharedsession = require("express-socket.io-session");
 
 const swig_ = new swig.Swig();
@@ -42,11 +43,13 @@ const io_carto = io_vue.of("/carto");
 const io_stats = io_vue.of("/stats");
 const io_map = io_vue.of("/map");
 const io_logs = io_vue.of("/logs");
+const io_alerts = io_vue.of("/alerts");
 
 const cartoRouter = require('./routes/carto')(io_carto);
 const statsRouter = require('./routes/stats')(io_stats);
 const mapRouter = require('./routes/map')(io_map);
 const logsRouter = require('./routes/logs')(io_logs);
+const alertsRouter = require('./routes/alerts')(io_alerts);
 const configRouter = require('./routes/config')();
 
 const sessionMiddleware = session({
@@ -71,6 +74,7 @@ io_carto.use(sharedsession(sessionMiddleware, {autoSave:true}));
 io_stats.use(sharedsession(sessionMiddleware, {autoSave:true})); 
 io_map.use(sharedsession(sessionMiddleware, {autoSave:true})); 
 io_logs.use(sharedsession(sessionMiddleware, {autoSave:true})); 
+io_alerts.use(sharedsession(sessionMiddleware, {autoSave:true})); 
 
 io_stats.on('connect', function(socket){
     console.log('Connected to stats')
@@ -94,6 +98,12 @@ io_logs.on('connect', function(socket){
     console.log('Connected to logs')
     helper.config(socket);
     logsHelper.logs_socket(socket);
+})
+
+io_alerts.on('connect', function(socket){
+    console.log('Connected to alerts');
+    helper.config(socket);
+    alertsHelper.alerts_socket(socket);
 })
 
 app.use(function (req, res, next) {
@@ -124,7 +134,10 @@ app.use(function (req, res, next) {
         number_of_nodes: app_settings.number_of_nodes
     }
 
-    res.locals.dark = req.session.dark;
+    if (req.session.dark)
+        res.locals.dark = req.session.dark;
+    else
+        res.locals.dark = "false";
 
     console.log('### End Middleware ###')
     next();
@@ -134,6 +147,7 @@ app.use('/', statsRouter);
 app.use('/carto', cartoRouter);
 app.use('/map', mapRouter);
 app.use('/logs', logsRouter);
+app.use('/alerts', alertsRouter);
 app.use('/config', configRouter);
 
 app.post(function (err, req, res, next) {

@@ -4,51 +4,13 @@
 {% block content %}
 
     <div id="page-content">
+        <br/>
         <div class="row match-height">
-            <div class="col-md-3">
-                <div class="panel {% if !dark %} panel panel-colorful panel-dark {% endif %}">
-                    <div class="pad-all text-center">
-                        <p class="text-bold text-lg text-main text-uppercase">Last restart</p>
-                        <p class="h1 text-thin mar-no pad-top" v-html="last_restart"></p>
-                    </div>
-                </div>
-            </div>
             <div class="col-md-2">
-                <div class="panel">
+                <div class="panel {% if dark === 'false' %} panel panel-colorful panel-dark {% endif %}">
                     <div class="pad-all text-center">
-                        <p class="text-bold text-lg text-main text-uppercase">Current EPS</p>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p class="h1 text-thin mar-no" v-html="render_number('current_eps')"></p>
-                            </div>
-                            <div class="col-md-6">
-                                <canvas id="gauge-current-eps" height="100" class="canvas-responsive"></canvas>
-                            </div>
-                        </div>
-                        <p class="text-lg text-overflow" v-html="date_str"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="panel">
-                    <div class="pad-all text-center">
-                        <p class="text-bold text-lg text-main text-uppercase">Average EPS</p>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p class="h1 text-thin mar-no pad-top" v-html="render_number('average_eps')"></p>
-                            </div>
-                            <div class="col-md-6">
-                                <canvas id="gauge-average-eps" height="100" class="canvas-responsive"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="panel">
-                    <div class="pad-all text-center">
-                        <p class="text-bold text-lg text-main text-uppercase">Max EPS</p>
-                        <p class="h1 text-thin mar-no pad-top" v-html="render_number('max_eps')"></p>
+                        <p class="text-bold text-lg text-main text-uppercase">Last restart - {{ hostname }}</p>
+                        <p class="h1 text-thin mar-no" v-html="last_restart"></p>
                     </div>
                 </div>
             </div>
@@ -56,26 +18,44 @@
             <div class="col-md-1">
                 <div class="panel">
                     <div class="pad-all text-center">
-                        <p class="text-bold text-lg text-main text-uppercase">Queue size</p>
-                        <p class="h1 text-thin mar-no pad-top" v-html="render_number('size')"></p>
+                        <canvas id="gauge-ram" height="180" class="canvas-responsive"></canvas>
+                        <p>
+                            <span id="gauge-ram-text" class="text-lg text-semibold"></span>%
+                        </p>
+                        <p class="h5 text-thin mar-no">Max Memory Used</p>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-1">
+            <div class="col-md-9">
                 <div class="panel">
-                    <div class="pad-all text-center">
-                        <p class="text-bold text-lg text-main text-uppercase">Max Queue size</p>
-                        <p class="h1 text-thin mar-no pad-top" v-html="render_number('maxqsize')"></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-1">
-                <div class="panel">
-                    <div class="pad-all text-center">
-                        <p class="text-bold text-lg text-main text-uppercase">Queue full</p>
-                        <p class="h1 text-thin mar-no pad-top" v-html="render_number('full')"></p>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Queue name</th>
+                                    <th>Total events</th>
+                                    <th>Current EPS</th>
+                                    <th>Average EPS</th>
+                                    <th>Queue size</th>
+                                    <th>Max EPS</th>
+                                    <th>Max Queue Size</th>
+                                    <th>Queue Full</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(values, queue_name) in queues_values">
+                                    <td class="text-lg"><b>${queue_name}</b></td>
+                                    <td><label class="label label-success label-block text-lg" v-html="render_number(values.total_events)"></label></td>
+                                    <td><label class="label label-primary label-block text-lg" v-html="render_number(values.enqueued)"></label></td>
+                                    <td><label class="label label-warning label-block text-lg" v-html="render_number(values.average)"></label></td>
+                                    <td><label class="label label-mint label-block text-lg" v-html="render_number(values.size)"></label></td>
+                                    <td><label class="label label-dark label-block text-lg" v-html="render_number(values.max_eps)"></label></td>
+                                    <td><label class="label label-purple label-block text-lg" v-html="render_number(values.maxqsize)"></label></td>
+                                    <td><label class="label label-danger label-block text-lg" v-html="render_number(values.full)"></label></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -84,7 +64,7 @@
             <div class="col-md-12">
                 <div class="panel">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Events by seconds</h3>
+                        <h3 class="panel-title"><i class="fa fa-area-chart">&nbsp;&nbsp;</i>Events by seconds</h3>
                     </div>
                     <div class="panel-body">
                         <div id="bar-eps" style="height: 600px"></div>
@@ -101,11 +81,14 @@
 {% endblock %}
 
 {% block js_include %}
-    <script src="/static/plugins/gauge-js/gauge.min.js"></script>  
+    <script src="/static/plugins/gauge-js/gauge.min.js"></script>   
+    <script src="/static/js/theme-echarts.js"></script>   
     <script src="/static/js/stats.js"></script>  
 {% endblock %}
 
 {% block jquery_code %}
+
+    var total_memory = {{ total_ram }};
 
 {% endblock %}
 

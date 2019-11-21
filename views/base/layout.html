@@ -35,7 +35,7 @@
             <div id="navbar-container" class="boxed">
 
                 <div class="navbar-header">
-                    <a href="index.html" class="navbar-brand">
+                    <a href="/" class="navbar-brand">
                         <img src="/static/img/vulture-logo-large.png" alt="Vulture Logo" class="brand-icon">
                     </a>
                 </div>
@@ -54,11 +54,14 @@
                         <li>
                             <a href="/logs"><i class="fa fa-table">&nbsp;&nbsp;</i>Logs</a>
                         </li>
+                        <li>
+                            <a href="/alerts"><i class="fa fa-bell">&nbsp;&nbsp;</i>Alerts</a>
+                        </li>
                     </ul>
                     <ul class="nav navbar-top-links">
                         <li>
                             <a href="#">
-                                <input type="checkbox" {% if dark === 'false' %} checked {% endif %} data-toggle="toggle" id="theme-selector" data-on="Light" data-off="Dark" data-size="small" data-onstyle="light" data-offstyle="dark"/>
+                                <input type="checkbox" {% if dark === 'false' %} checked {% endif %} data-toggle="toggle" id="theme-selector" data-on="Light Theme" data-off="Dark Theme" data-size="small" data-onstyle="light" data-offstyle="dark"/>
                             </a>
                         </li>
                         <li>
@@ -144,13 +147,15 @@
         const socket = io("{{ socket_path }}");
 
         $(function(){
-           /* $(window).on('blur', function(){
+            /*$(window).on('blur', function(){
                 socket.disconnect();
             })
 
             $(window).on('focus', function(){
                 socket.open();
             })*/
+
+            $('[data-toggle="tooltip"]').tooltip();
 
             $('#theme-selector').bootstrapToggle({
             });

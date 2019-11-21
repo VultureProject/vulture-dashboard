@@ -14,7 +14,7 @@
                 <div class="panel">
                     <div class="panel-body">
                         <div class="table-responsive graph">
-                            <table class="table table-striped" id="table-logs">
+                            <table class="table table-striped" id="table-alerts">
                                 <thead>
                                     <tr>
                                         <th>Time</th>
@@ -28,18 +28,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="log in logs">
-                                        <td v-html="format_date(log.timestamp)"></td>
-                                        <td v-html="format_ip('net_src_ip', log)"></td>
-                                        <td v-html="format_ip('net_dst_ip', log)"></td>
-                                        <td>${log.net_dst_port}</td>
-                                        <td>${log.net_bytes_total}</td>
-                                        <td>${log.net_ttl}</td>
+                                    <tr v-for="alert in alerts">
+                                        <td v-html="format_date(alert.timestamp)"></td>
+                                        <td v-html="format_ip('net_src_ip', alert)"></td>
+                                        <td v-html="format_ip('net_dst_ip', alert)"></td>
+                                        <td>${alert.net_dst_port}</td>
+                                        <td>${alert.net_bytes_total}</td>
+                                        <td>${alert.net_ttl}</td>
                                         <td>
-                                            <img :src="src_flag(log.iso_code)"/>&nbsp;&nbsp;
-                                            ${log.country}
+                                            <img :src="src_flag(alert.iso_code)"/>&nbsp;&nbsp;
+                                            ${alert.country}
                                         </td>
-                                        <td><span v-if="log.city">${log.city}</span></td>
+                                        <td><span v-if="alert.city">${alert.city}</span></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -57,7 +57,7 @@
 {% endblock %}
 
 {% block js_include %}  
-    <script src="/static/js/logs.js"></script>
+    <script src="/static/js/alerts.js"></script>
 {% endblock %}
 
 {% block jquery_code %}
