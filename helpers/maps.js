@@ -17,6 +17,7 @@ exports.map_socket = function(socket){
         if (helper.apply_filter(message, socket.handshake.session.filter)){
             var ctx = false;
             var node_ip;
+
             if (ip.isPrivate(message.net_src_ip)){
                 ctx = helper.format_ctx(message, true);
                 node_ip = message.net_src_ip;

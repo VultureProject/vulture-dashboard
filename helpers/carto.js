@@ -19,8 +19,14 @@ exports.carto_socket = function(socket){
 
         var src_reputation = message.ctx_src_reputation;
         var dst_reputation = message.ctx_dst_reputation;
-        var src_tags = message.ctx_src_tags;
-        var dst_tags = message.ctx_dst_tags;
+
+        var src_tags = "";
+        if (message.ctx_src_tags)
+            src_tags = message.ctx_src_tags;
+
+        var dst_tags = ""
+        if (message.ctx_dst_tags)
+            dst_tags = message.ctx_dst_tags;
 
         if (helper.apply_filter(message, socket.handshake.session.filter)){
             var src_ip = message.net_src_ip;

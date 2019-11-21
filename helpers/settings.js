@@ -2,7 +2,7 @@
 var settings = {
     number_of_nodes: 100,
     redis_port: 6379,
-    redis_host: "10.59.10.250",
+    redis_host: "/var/sockets/redis/redis.sock",
     impcap_publisher: "vlt.rsyslog.impcap",
     stats_publisher: "vlt.rsyslog.stats",
     darwin_alerts_publisher: "",

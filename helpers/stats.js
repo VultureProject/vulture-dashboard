@@ -14,7 +14,7 @@ exports.stats_socket = function(socket){
         try{
             message = JSON.parse(message);
 
-            var last_restart_timestamp = message.uptime * 1000;
+            var last_restart_timestamp = message.starttime * 1000;
 
             if (last_restart_timestamp > last_restart){
                 last_restart = last_restart_timestamp;

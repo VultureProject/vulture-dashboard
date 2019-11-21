@@ -20,20 +20,20 @@ exports.format_ctx = function(message, is_src){
 
     if (is_src){
         ctx.reputation = message.ctx_src_reputation;
-        ctx.country = message['ctx_src_geoip.country_name'];
-        ctx.city = message['ctx_src_geoip.city_name'];
-        ctx.iso_code = message['ctx_src_geoip.iso_code'];
-        ctx.latitude = message['ctx_src_geoip.latitude'];
-        ctx.longitude = message['ctx_src_geoip.longitude'];
-        ctx.tags = message.ctx_src_tags;
+        ctx.country = message.ctx_src_country_name;
+        ctx.city = message.ctx_src_city_name;
+        ctx.iso_code = message.ctx_src_iso_code;
+        ctx.latitude = message.ctx_src_latitude;
+        ctx.longitude = message.ctx_src_longitude;
+        ctx.tags = message.reputation_ctx_tags;
     } else {
         ctx.reputation = message.ctx_dst_reputation;
-        ctx.country = message['ctx_dst_geoip.country_name'];
-        ctx.city = message['ctx_dst_geoip.city_name'];
-        ctx.iso_code = message['ctx_dst_geoip.iso_code'];
-        ctx.latitude = message['ctx_dst_geoip.latitude'];
-        ctx.longitude = message['ctx_dst_geoip.longitude'];
-        ctx.tags = message.ctx_dst_tags;
+        ctx.country = message.ctx_dst_country_name;
+        ctx.city = message.ctx_dst_city_name;
+        ctx.iso_code = message.ctx_dst_iso_code;
+        ctx.latitude = message.ctx_dst_latitude;
+        ctx.longitude = message.ctx_dst_longitude;
+        ctx.tags = message.reputation_ctx_tags;
     }
 
     return ctx;

@@ -37,8 +37,8 @@
                                     <th>Total events</th>
                                     <th>Current EPS</th>
                                     <th>Average EPS</th>
-                                    <th>Queue size</th>
                                     <th>Max EPS</th>
+                                    <th>Queue size</th>
                                     <th>Max Queue Size</th>
                                     <th>Queue Full</th>
                                 </tr>
@@ -49,8 +49,8 @@
                                     <td><label class="label label-success label-block text-lg" v-html="render_number(values.total_events)"></label></td>
                                     <td><label class="label label-primary label-block text-lg" v-html="render_number(values.enqueued)"></label></td>
                                     <td><label class="label label-warning label-block text-lg" v-html="render_number(values.average)"></label></td>
-                                    <td><label class="label label-mint label-block text-lg" v-html="render_number(values.size)"></label></td>
                                     <td><label class="label label-dark label-block text-lg" v-html="render_number(values.max_eps)"></label></td>
+                                    <td><label class="label label-mint label-block text-lg" v-html="render_number(values.size)"></label></td>
                                     <td><label class="label label-purple label-block text-lg" v-html="render_number(values.maxqsize)"></label></td>
                                     <td><label class="label label-danger label-block text-lg" v-html="render_number(values.full)"></label></td>
                                 </tr>
