@@ -24,7 +24,12 @@ var server = require('../app').server;
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen({
+  host: "127.0.0.1",
+  port: port,
+  path: "/"
+});
+
 server.on('error', onError);
 server.on('listening', onListening);
 

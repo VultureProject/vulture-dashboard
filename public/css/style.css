@@ -48,3 +48,12 @@ code{
 #help_text_number_of_nodes{
     display: none;
 }
+
+#login-panel{
+    background-color: #fff !important;
+    width: 400px;
+}
+
+#logo_signin{
+    width: 200px;
+}

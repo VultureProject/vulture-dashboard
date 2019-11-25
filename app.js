@@ -7,7 +7,13 @@ const logger = require('morgan');
 const swig = require('swig');
 
 const session = require('express-session')
+const mongoose = require('mongoose');
 
+const passport = require('passport');
+const CustomStrategy = require('passport-custom').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
+
+const Account = require('./models/account');
 const app_settings = require('./helpers/settings');
 const helper = require('./helpers/utils');
 const cartoHelper = require('./helpers/carto');
@@ -54,6 +60,7 @@ const io_map = io_vue.of("/map");
 const io_logs = io_vue.of("/logs");
 const io_alerts = io_vue.of("/alerts");
 
+const accountRouter = require('./routes/account')();
 const cartoRouter = require('./routes/carto')(io_carto);
 const statsRouter = require('./routes/stats')(io_stats);
 const mapRouter = require('./routes/map')(io_map);
@@ -61,16 +68,6 @@ const logsRouter = require('./routes/logs')(io_logs);
 const alertsRouter = require('./routes/alerts')(io_alerts);
 const configRouter = require('./routes/config')();
 
-var redis_store_config = {
-    client: redisClient,
-    ttl: 86400
-}
-/*if (app_settings.redis_use_socket){
-    redis_store_config.path = app_settings.redis_socket;
-} else {
-    redis_store_config.host = app_settings.redis_host;
-    redis_store_config.port = app_settings.redis_port;
-}*/
 
 const sessionMiddleware = session({
     genid: (req) => {
@@ -80,10 +77,50 @@ const sessionMiddleware = session({
     resave: true,
     saveUninitialized: true,
     cookie: {secure: false},
-    store: new redisStore(redis_store_config),
+    store: new redisStore({
+        client: redisClient,
+        ttl: 86400
+    }),
 })
 
 app.use(sessionMiddleware)
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+const pbkdf2 = require('pbkdf2-sha256');
+
+passport.use(new LocalStrategy(
+    function(username, password, done) {
+        Account.findOne({
+            username: username
+        }, function(err, user){
+            if (err)
+                return done(err);
+
+            if (!user)
+                return done(null, false);
+
+            var parts = user.password.split('$');
+            var iterations = parts[1];
+            var salt = parts[2];
+
+            var hash = pbkdf2(password, new Buffer(salt), iterations, 32).toString('base64');
+            if (hash !== parts[3])
+                return done(null, false)
+
+            return done(null, user)
+        })
+    }
+));
+
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(user, done) {
+    done(null, user);
+});
 
 io_carto.use(sharedsession(sessionMiddleware, {autoSave:true})); 
 io_stats.use(sharedsession(sessionMiddleware, {autoSave:true})); 
@@ -158,7 +195,21 @@ app.use(function (req, res, next) {
     next();
 })
 
+
+function is_authenticated(req, res, next){
+    if (req.path === "/auth/login" || req.path === "/auth/logout")
+        return next();
+
+    if (req.user)
+        return next();
+
+    return res.redirect('/auth/login');
+}
+
+app.use(is_authenticated);
+
 app.use('/', statsRouter);
+app.use('/auth', accountRouter);
 app.use('/carto', cartoRouter);
 app.use('/map', mapRouter);
 app.use('/logs', logsRouter);
@@ -176,5 +227,7 @@ app.post(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
+
+mongoose.connect(app_settings.mongo_connection.url, app_settings.mongo_connection.options);
 
 module.exports = {app: app, server: server};
