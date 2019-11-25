@@ -10,14 +10,14 @@ module.exports = function(io){
 	});
 
 	router.post('/login', passport.authenticate('local', {
-		successRedirect: '/',
-		failureRedirect: '/auth/login',
+		successRedirect: '/dashboard/',
+		failureRedirect: '/dashboard/auth/login',
 	  	failureFlash: true,
 	}));
 
 	router.get('/logout', function(req, res){
 		req.session.destroy();
-		res.redirect('/');
+		res.redirect('/dashboard/');
 	})
 
     return router;

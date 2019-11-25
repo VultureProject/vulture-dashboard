@@ -49,17 +49,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/static', express.static(path.join(__dirname, 'public')));
+app.use('/dashboard/static', express.static(path.join(__dirname, 'public')));
 
 app.engine('html', swig_.renderFile);
 app.set('view engine', 'html');
 
 const io_vue = io(server);
-const io_carto = io_vue.of("/carto");
-const io_stats = io_vue.of("/stats");
-const io_map = io_vue.of("/map");
-const io_logs = io_vue.of("/logs");
-const io_alerts = io_vue.of("/alerts");
+const io_carto = io_vue.of("/dashboard/carto");
+const io_stats = io_vue.of("/dashboard/stats");
+const io_map = io_vue.of("/dashboard/map");
+const io_logs = io_vue.of("/dashboard/logs");
+const io_alerts = io_vue.of("/dashboard/alerts");
 
 const accountRouter = require('./routes/account')();
 const cartoRouter = require('./routes/carto')(io_carto);
@@ -196,24 +196,24 @@ app.use(function (req, res, next) {
 
 
 function is_authenticated(req, res, next){
-    if (req.path === "/auth/login" || req.path === "/auth/logout")
+    if (req.path === "/dashboard/auth/login" || req.path === "/dashboard/auth/logout")
         return next();
 
     if (req.user)
         return next();
 
-    return res.redirect('/auth/login');
+    return res.redirect('/dashboard/auth/login');
 }
 
 app.use(is_authenticated);
 
-app.use('/', statsRouter);
-app.use('/auth', accountRouter);
-app.use('/carto', cartoRouter);
-app.use('/map', mapRouter);
-app.use('/logs', logsRouter);
-app.use('/alerts', alertsRouter);
-app.use('/config', configRouter);
+app.use('/dashboard/', statsRouter);
+app.use('/dashboard/auth', accountRouter);
+app.use('/dashboard/carto', cartoRouter);
+app.use('/dashboard/map', mapRouter);
+app.use('/dashboard/logs', logsRouter);
+app.use('/dashboard/alerts', alertsRouter);
+app.use('/dashboard/config', configRouter);
 
 app.post(function (err, req, res, next) {
     console.log(err.message)

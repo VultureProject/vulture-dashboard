@@ -4,7 +4,7 @@ module.exports = function(io){
 
     router.get('/', function(req, res, next) {
         res.render('carto', {
-            socket_path: '/carto',
+            socket_path: '/dashboard/carto',
             config: true
         });
     });

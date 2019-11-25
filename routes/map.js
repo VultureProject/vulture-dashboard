@@ -4,7 +4,7 @@ module.exports = function(io){
 
     router.get('/', function(req, res, next) {
         res.render('map', {
-            socket_path: '/map',
+            socket_path: '/dashboard/map',
             config: true
         });
     });

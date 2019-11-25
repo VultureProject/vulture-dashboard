@@ -8,7 +8,7 @@ module.exports = function(io){
     	var hostname = os.hostname();
 
         res.render('stats', {
-            socket_path: '/stats',
+            socket_path: '/dashboard/stats',
             total_ram: total_ram,
             hostname: hostname,
             filter: false

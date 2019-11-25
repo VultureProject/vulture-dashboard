@@ -4,7 +4,7 @@ module.exports = function(io){
 
     router.get('/', function(req, res, next) {
         res.render('logs', {
-            socket_path: '/logs',
+            socket_path: '/dashboard/logs',
             config: true
         });
     });

@@ -4,7 +4,7 @@ module.exports = function(io){
 
     router.get('/', function(req, res, next) {
         res.render('alerts', {
-            socket_path: '/alerts',
+            socket_path: '/dashboard/alerts',
             config: true
         });
     });
