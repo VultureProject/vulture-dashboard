@@ -57,3 +57,11 @@ code{
 #logo_signin{
     width: 200px;
 }
+
+#page-content{
+    padding: 0 !important;
+}
+
+#vue-page{
+    padding: 0 10px;
+}
