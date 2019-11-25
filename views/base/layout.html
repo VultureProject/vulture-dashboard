@@ -10,7 +10,6 @@
     <title>Vulture Dashboard</title>
 
     <link rel='shortcut icon' href="/dashboard/static/img/favicon.ico" type='image/png'/>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
     <link href="/dashboard/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/dashboard/static/css/demo/nifty-demo-icons.min.css" rel="stylesheet">
     <link href="/dashboard/static/css/nifty.css" rel="stylesheet">        
@@ -35,7 +34,7 @@
             <div id="navbar-container" class="boxed">
 
                 <div class="navbar-header">
-                    <a href="/" class="navbar-brand">
+                    <a href="/dashboard/" class="navbar-brand">
                         <img src="/dashboard/static/img/vulture-logo-large.png" alt="Vulture Logo" class="brand-icon">
                     </a>
                 </div>
@@ -43,19 +42,19 @@
                 <div class="navbar-content">
                     <ul class="nav navbar-top-links">
                         <li>
-                            <a href="/"><i class="fa fa-home">&nbsp;&nbsp;</i>Home</a>
+                            <a href="/dashboard/"><i class="fa fa-home">&nbsp;&nbsp;</i>Home</a>
                         </li>
                         <li>
-                            <a href="/carto"><i class="fa fa-sitemap">&nbsp;&nbsp;</i>Cartography</a>
+                            <a href="/dashboard/carto"><i class="fa fa-sitemap">&nbsp;&nbsp;</i>Cartography</a>
                         </li>
                         <li>
-                            <a href="/map"><i class="fa fa-globe">&nbsp;&nbsp;</i>Map</a>
+                            <a href="/dashboard/map"><i class="fa fa-globe">&nbsp;&nbsp;</i>Map</a>
                         </li>
                         <li>
-                            <a href="/logs"><i class="fa fa-table">&nbsp;&nbsp;</i>Logs</a>
+                            <a href="/dashboard/logs"><i class="fa fa-table">&nbsp;&nbsp;</i>Logs</a>
                         </li>
                         <li>
-                            <a href="/alerts"><i class="fa fa-bell">&nbsp;&nbsp;</i>Alerts</a>
+                            <a href="/dashboard/alerts"><i class="fa fa-bell">&nbsp;&nbsp;</i>Alerts</a>
                         </li>
                     </ul>
                     <ul class="nav navbar-top-links">
@@ -140,8 +139,8 @@
     <script src="/dashboard/static/plugins/bootstrap-toggle/bootstrap-toggle.min.js"></script>
     <script src="/dashboard/static/plugins/momentjs/moment.min.js"></script>
     <script src="/dashboard/static/plugins/momentjs/moment-with-locales.min.js"></script>
-    <script type="text/javascript" src="/dashboard/static/plugins/pnotify/dist/iife/PNotify.js"></script>
-    <script type="text/javascript" src="/dashboard/static/plugins/pnotify/dist/iife/PNotifyButtons.js"></script>
+    <script src="/dashboard/static/plugins/pnotify/dist/iife/PNotify.js"></script>
+    <script src="/dashboard/static/plugins/pnotify/dist/iife/PNotifyButtons.js"></script>
     <script src="/dashboard/static/plugins/jquery-match-height/jquery-match-height.min.js"></script>
     <script src="/dashboard/static/js/config.js"></script>
 
@@ -149,7 +148,7 @@
         PNotify.defaults.styling = 'bootstrap4';
         PNotify.defaults.icons = 'fontawesome4';
 
-        const socket = io("{{ socket_path }}");
+        const socket = io({path: "{{ socket_path }}"});
 
         $(function(){
             $(window).on('blur', function(){
@@ -161,9 +160,7 @@
             })
 
             $('[data-toggle="tooltip"]').tooltip();
-
-            $('#theme-selector').bootstrapToggle({
-            });
+            $('#theme-selector').bootstrapToggle();
 
             $('#theme-selector').on('click', function(e){
                 e.stopPropagation();
@@ -173,7 +170,7 @@
                 var dark = $(this).is(':checked') === false;
 
                 $.post(
-                    'config/theme',
+                    '/dashboard/config/theme',
                     {dark: dark},
 
                     function(response){

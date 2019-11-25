@@ -1,10 +1,12 @@
-const os = require('os');
 const fs = require('fs');
 
 const ca_file = fs.readFileSync("/var/db/pki/ca.pem");
 const key_file = fs.readFileSync("/var/db/pki/node.pem");
+const hostname = fs.readFileSync('/etc/host-hostname').toString().trim();
 
 var settings = {
+    hostname: hostname,
+    websocket_path: "/dashboard/ws",
 	log_level: "dev",
     redis_port: 6379,
     number_of_nodes: 100,
@@ -17,7 +19,7 @@ var settings = {
     ip_filter_keys: ['net_src_ip', 'net_dst_ip'],
     int_filter_keys: ['net_src_port', 'net_dst_port', 'net_ttl'],
     mongo_connection: {
-        url: "mongodb://" + os.hostname() + ":9091/vulture",
+        url: "mongodb://" + hostname + ":9091/vulture",
         options: {
             ssl: true,
             replicaSet: "vulture",

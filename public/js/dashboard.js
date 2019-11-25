@@ -79,15 +79,5 @@ var config_vue = new Vue({
 
 
 $(function(){
-    /*$(window).unbind('blur');
-    $(window).blur(function(){
-        config_vue.stop_dashboard();
-    });
-
-    $(window).unbind('focus');
-    $(window).focus(function(){
-        config_vue.start_dashboard();
-    });*/
-
     init_carto();
 })

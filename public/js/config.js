@@ -77,7 +77,7 @@ $(function(){
                     var self = this;
 
                     $.post(
-                        '/config/cancel/',
+                        '/dashboard/config/cancel/',
                         null,
 
                         function(response){

@@ -1,16 +1,16 @@
 module.exports = function(io){
+    const app_settings = require('../helpers/settings');
     const express = require('express');
     const router = express.Router();
     const os = require('os');
 
     router.get('/$', function(req, res, next) {
     	var total_ram = os.totalmem() / 1000;
-    	var hostname = os.hostname();
 
         res.render('stats', {
-            socket_path: '/dashboard/stats',
+            socket_path: app_settings.websocket_path + '/stats',
             total_ram: total_ram,
-            hostname: hostname,
+            hostname: app_settings.hostname,
             filter: false
         });
     })

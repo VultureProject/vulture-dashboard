@@ -1,17 +1,13 @@
 const express = require('express');
 const reload = require('express-reload')
-
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const swig = require('swig');
-
 const session = require('express-session')
 const mongoose = require('mongoose');
-
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-
 const Account = require('./models/account');
 const app_settings = require('./helpers/settings');
 const helper = require('./helpers/utils');
@@ -21,7 +17,6 @@ const statsHelper = require('./helpers/stats');
 const mapsHelper = require('./helpers/maps');
 const alertsHelper = require('./helpers/alerts');
 const sharedsession = require("express-socket.io-session");
-
 const pbkdf2 = require('pbkdf2-sha256');
 
 const swig_ = new swig.Swig();
@@ -29,7 +24,6 @@ const swig_ = new swig.Swig();
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io');
-
 
 var redis_config = {};
 if (app_settings.redis_use_socket){
@@ -49,17 +43,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.set('views', __dirname + "/views/");
+
 app.use('/dashboard/static', express.static(path.join(__dirname, 'public')));
 
 app.engine('html', swig_.renderFile);
 app.set('view engine', 'html');
 
 const io_vue = io(server);
-const io_carto = io_vue.of("/dashboard/carto");
-const io_stats = io_vue.of("/dashboard/stats");
-const io_map = io_vue.of("/dashboard/map");
-const io_logs = io_vue.of("/dashboard/logs");
-const io_alerts = io_vue.of("/dashboard/alerts");
+const io_carto = io_vue.of("/ws/carto");
+const io_stats = io_vue.of("/ws/stats");
+const io_map = io_vue.of("/ws/map");
+const io_logs = io_vue.of("/ws/logs");
+const io_alerts = io_vue.of("/ws/alerts");
 
 const accountRouter = require('./routes/account')();
 const cartoRouter = require('./routes/carto')(io_carto);
@@ -196,7 +192,7 @@ app.use(function (req, res, next) {
 
 
 function is_authenticated(req, res, next){
-    if (req.path === "/dashboard/auth/login" || req.path === "/dashboard/auth/logout")
+    if (req.path === "/auth/login" || req.path === "/auth/logout")
         return next();
 
     if (req.user)
@@ -207,13 +203,13 @@ function is_authenticated(req, res, next){
 
 app.use(is_authenticated);
 
-app.use('/dashboard/', statsRouter);
-app.use('/dashboard/auth', accountRouter);
-app.use('/dashboard/carto', cartoRouter);
-app.use('/dashboard/map', mapRouter);
-app.use('/dashboard/logs', logsRouter);
-app.use('/dashboard/alerts', alertsRouter);
-app.use('/dashboard/config', configRouter);
+app.use('/', statsRouter);
+app.use('/auth', accountRouter);
+app.use('/carto', cartoRouter);
+app.use('/map', mapRouter);
+app.use('/logs', logsRouter);
+app.use('/alerts', alertsRouter);
+app.use('/config', configRouter);
 
 app.post(function (err, req, res, next) {
     console.log(err.message)
@@ -227,6 +223,7 @@ app.post(function (err, req, res, next) {
     res.render('error');
 });
 
+console.log(app_settings.mongo_connection.url)
 mongoose.connect(app_settings.mongo_connection.url, app_settings.mongo_connection.options);
 
 module.exports = {app: app, server: server};

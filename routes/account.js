@@ -2,8 +2,6 @@ module.exports = function(io){
     const express = require('express');
     const router = express.Router();
     const passport = require('passport'); 
-	const Account = require('../models/account');
-
 
 	router.get('/login', function(req, res, next) {
 		res.render('login');
