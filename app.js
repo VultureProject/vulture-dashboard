@@ -10,7 +10,6 @@ const session = require('express-session')
 const mongoose = require('mongoose');
 
 const passport = require('passport');
-const CustomStrategy = require('passport-custom').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 
 const Account = require('./models/account');
@@ -22,6 +21,8 @@ const statsHelper = require('./helpers/stats');
 const mapsHelper = require('./helpers/maps');
 const alertsHelper = require('./helpers/alerts');
 const sharedsession = require("express-socket.io-session");
+
+const pbkdf2 = require('pbkdf2-sha256');
 
 const swig_ = new swig.Swig();
 
@@ -87,8 +88,6 @@ app.use(sessionMiddleware)
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-const pbkdf2 = require('pbkdf2-sha256');
 
 passport.use(new LocalStrategy(
     function(username, password, done) {
