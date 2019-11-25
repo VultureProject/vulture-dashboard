@@ -152,13 +152,13 @@
         const socket = io("{{ socket_path }}");
 
         $(function(){
-            /*$(window).on('blur', function(){
+            $(window).on('blur', function(){
                 socket.disconnect();
             })
 
             $(window).on('focus', function(){
                 socket.open();
-            })*/
+            })
 
             $('[data-toggle="tooltip"]').tooltip();
 
