@@ -45,24 +45,24 @@ app.use(cookieParser());
 
 app.set('views', __dirname + "/views/");
 
-app.use('/dashboard/static', express.static(path.join(__dirname, 'public')));
+app.use('/static', express.static(path.join(__dirname, 'public')));
 
 app.engine('html', swig_.renderFile);
 app.set('view engine', 'html');
 
 const io_vue = io(server);
-const io_carto = io_vue.of("/ws/carto");
-const io_stats = io_vue.of("/ws/stats");
-const io_map = io_vue.of("/ws/map");
-const io_logs = io_vue.of("/ws/logs");
-const io_alerts = io_vue.of("/ws/alerts");
+const io_carto = io_vue.of(app_settings.websocket_path + "/carto");
+const io_stats = io_vue.of(app_settings.websocket_path + "/stats");
+const io_map = io_vue.of(app_settings.websocket_path + "/map");
+const io_logs = io_vue.of(app_settings.websocket_path + "/logs");
+const io_alerts = io_vue.of(app_settings.websocket_path + "/alerts");
 
 const accountRouter = require('./routes/account')();
-const cartoRouter = require('./routes/carto')(io_carto);
-const statsRouter = require('./routes/stats')(io_stats);
-const mapRouter = require('./routes/map')(io_map);
-const logsRouter = require('./routes/logs')(io_logs);
-const alertsRouter = require('./routes/alerts')(io_alerts);
+const cartoRouter = require('./routes/carto')();
+const statsRouter = require('./routes/stats')();
+const mapRouter = require('./routes/map')();
+const logsRouter = require('./routes/logs')();
+const alertsRouter = require('./routes/alerts')();
 const configRouter = require('./routes/config')();
 
 
@@ -154,7 +154,6 @@ io_alerts.on('connect', function(socket){
 })
 
 app.use(function (req, res, next) {
-    console.log('### Start Middleware ###')
     res.locals.path = req.path;
 
     if (req.session.group_by)
@@ -186,7 +185,6 @@ app.use(function (req, res, next) {
     else
         res.locals.dark = "false";
 
-    console.log('### End Middleware ###')
     next();
 })
 
@@ -223,7 +221,5 @@ app.post(function (err, req, res, next) {
     res.render('error');
 });
 
-console.log(app_settings.mongo_connection.url)
 mongoose.connect(app_settings.mongo_connection.url, app_settings.mongo_connection.options);
-
 module.exports = {app: app, server: server};

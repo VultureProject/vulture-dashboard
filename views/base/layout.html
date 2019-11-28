@@ -148,7 +148,8 @@
         PNotify.defaults.styling = 'bootstrap4';
         PNotify.defaults.icons = 'fontawesome4';
 
-        const socket = io({path: "{{ socket_path }}"});
+        const socket_path = "{{ socket_path }}"
+        const socket = io.connect(socket_path)
 
         $(function(){
             $(window).on('blur', function(){

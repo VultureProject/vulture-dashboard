@@ -25,7 +25,7 @@ var server = require('../app').server;
  */
 
 server.listen({
-  host: "127.0.0.1",
+  host: "127.0.0.6",
   port: port,
   path: "/"
 });

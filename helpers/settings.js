@@ -6,12 +6,12 @@ const hostname = fs.readFileSync('/etc/host-hostname').toString().trim();
 
 var settings = {
     hostname: hostname,
-    websocket_path: "/dashboard/ws",
+    websocket_path: "/socket.io",
 	log_level: "dev",
     redis_port: 6379,
     number_of_nodes: 100,
     redis_socket: "/var/sockets/redis/redis.sock",
-    redis_use_socket: true,
+    redis_use_socket: false,
     redis_host: "",
     impcap_publisher: "vlt.rsyslog.impcap",
     stats_publisher: "vlt.rsyslog.stats",
