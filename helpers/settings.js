@@ -11,7 +11,7 @@ var settings = {
     redis_port: 6379,
     number_of_nodes: 100,
     redis_socket: "/var/sockets/redis/redis.sock",
-    redis_use_socket: false,
+    redis_use_socket: true,
     redis_host: "",
     impcap_publisher: "vlt.rsyslog.impcap",
     stats_publisher: "vlt.rsyslog.stats",
