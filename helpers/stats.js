@@ -22,10 +22,16 @@ exports.stats_socket = function(socket){
                 socket.emit('last_restart', {
                     date: moment(last_restart_timestamp).format('DD/MM/YYYY HH:mm:ss')
                 })
+
+                max_memory_used = 0;
+                socket.emit('max_memory_used', {
+                    max: max_memory_used
+                })
+
             }
 
-            var date_now = moment();
-            var nb_seconds_since_restart = ((date_now.unix() * 1000) - last_restart_timestamp) / 1000;
+            var date_now = moment.utc();
+            var nb_seconds_since_restart = ((date_now.unix()) - (last_restart_timestamp / 1000));
             var date_str = date_now.format("DD/MM/YYYY HH:mm:ss")
 
             var msg = message.stat;
@@ -101,5 +107,6 @@ exports.stats_socket = function(socket){
     socket.on('disconnect', function(data){
         console.log('Disconnected from stats')
         redis_subscriber_stats.unsubscribe(app_settings.stats_publisher)
+        redis_subscriber_stats.quit()
     })
 }

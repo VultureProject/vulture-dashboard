@@ -53,5 +53,6 @@ exports.map_socket = function(socket){
     socket.on('disconnect', function(data){
         console.log('Disconnected from map')
         redis_subscriber_impcap.unsubscribe(app_settings.impcap_publisher)
+        redis_subscriber_impcap.quit()
     })
 }
