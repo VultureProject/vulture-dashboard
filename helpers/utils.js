@@ -93,9 +93,8 @@ exports.apply_filter = function(message, filter){
         return false;
     } else if (app_settings.int_filter_keys.indexOf(filter.key_filter) !== -1){
         // INT Filter
-        if (filter.value_filter.indexOf(message[filter.key_filter]) !== -1){
+        if (filter.value_filter.indexOf(message[filter.key_filter]) !== -1)
             return true;
-        }
     }
 }
 

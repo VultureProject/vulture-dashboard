@@ -27,7 +27,6 @@ exports.stats_socket = function(socket){
                 socket.emit('max_memory_used', {
                     max: max_memory_used
                 })
-
             }
 
             var date_now = moment.utc();
@@ -35,7 +34,6 @@ exports.stats_socket = function(socket){
             var date_str = date_now.format("DD/MM/YYYY HH:mm:ss")
 
             var msg = message.stat;
-
             if (msg.name === "resource-usage"){
                 if (max_memory_used < msg.maxrss){
                     max_memory_used = msg.maxrss;

@@ -131,7 +131,7 @@ $(function(){
                     }
 
                     $.post(
-                        '/config',
+                        '/dashboard/config',
                         data,
 
                         function(response){

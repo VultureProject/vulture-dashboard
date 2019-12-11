@@ -1,4 +1,4 @@
-var advens_theme = {
+var echarts_theme = {
     color: ["#05509e","#0c8fcf","#8bc34a",
     "#cddc39","#ffc107","#f18705",
     "#e95014","#d6171a","#e9538e",

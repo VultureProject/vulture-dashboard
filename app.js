@@ -14,6 +14,7 @@ const helper = require('./helpers/utils');
 const cartoHelper = require('./helpers/carto');
 const logsHelper = require('./helpers/logs');
 const statsHelper = require('./helpers/stats');
+const darwinStatsHelper = require('./helpers/darwin_stats');
 const mapsHelper = require('./helpers/maps');
 const alertsHelper = require('./helpers/alerts');
 const sharedsession = require("express-socket.io-session");
@@ -38,7 +39,7 @@ const redisClient = redis.createClient(redis_config);
 const redisStore = require('connect-redis')(session);
 const uuid = require('uuid/v4');
 
-app.use(logger(app_settings.log_level));
+// app.use(logger(app_settings.log_level));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -53,6 +54,7 @@ app.set('view engine', 'html');
 const io_vue = io(server);
 const io_carto = io_vue.of(app_settings.websocket_path + "/carto");
 const io_stats = io_vue.of(app_settings.websocket_path + "/stats");
+const io_darwin_stats = io_vue.of(app_settings.websocket_path + "/darwin/stats");
 const io_map = io_vue.of(app_settings.websocket_path + "/map");
 const io_logs = io_vue.of(app_settings.websocket_path + "/logs");
 const io_alerts = io_vue.of(app_settings.websocket_path + "/alerts");
@@ -60,6 +62,7 @@ const io_alerts = io_vue.of(app_settings.websocket_path + "/alerts");
 const accountRouter = require('./routes/account')();
 const cartoRouter = require('./routes/carto')();
 const statsRouter = require('./routes/stats')();
+const darwinStatsRouter = require('./routes/darwin_stats')();
 const mapRouter = require('./routes/map')();
 const logsRouter = require('./routes/logs')();
 const alertsRouter = require('./routes/alerts')();
@@ -70,10 +73,10 @@ const sessionMiddleware = session({
     genid: (req) => {
         return uuid() // use UUIDs for session IDs
     },
-    secret: 'keyboard cat',
+    secret: uuid(),
     resave: true,
     saveUninitialized: true,
-    cookie: {secure: false},
+    cookie: {maxAge: 86400, expires: 86400},
     store: new redisStore({
         client: redisClient,
         ttl: 86400
@@ -119,6 +122,7 @@ passport.deserializeUser(function(user, done) {
 
 io_carto.use(sharedsession(sessionMiddleware, {autoSave:true})); 
 io_stats.use(sharedsession(sessionMiddleware, {autoSave:true})); 
+io_darwin_stats.use(sharedsession(sessionMiddleware, {autoSave:true})); 
 io_map.use(sharedsession(sessionMiddleware, {autoSave:true})); 
 io_logs.use(sharedsession(sessionMiddleware, {autoSave:true})); 
 io_alerts.use(sharedsession(sessionMiddleware, {autoSave:true})); 
@@ -127,6 +131,12 @@ io_stats.on('connect', function(socket){
     console.log('Connected to stats')
     helper.config(socket);
     statsHelper.stats_socket(socket);
+})
+
+io_darwin_stats.on('connect', function(socket){
+    console.log('Connected to Darwin Stats')
+    helper.config(socket);
+    darwinStatsHelper.stats_socket(socket);
 })
 
 io_carto.on('connect', function(socket){
@@ -202,6 +212,7 @@ function is_authenticated(req, res, next){
 app.use(is_authenticated);
 
 app.use('/', statsRouter);
+app.use('/darwin/stats', darwinStatsRouter);
 app.use('/auth', accountRouter);
 app.use('/carto', cartoRouter);
 app.use('/map', mapRouter);

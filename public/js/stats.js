@@ -68,7 +68,7 @@ current_vue = new Vue({
         if (dark)
             self.bar_eps = echarts.init(document.getElementById('bar-eps'));
         else
-            self.bar_eps = echarts.init(document.getElementById('bar-eps'), advens_theme);
+            self.bar_eps = echarts.init(document.getElementById('bar-eps'), echarts_theme);
 
         self.bar_eps.setOption(self.option_bar_eps);
         self.init_socket();
@@ -120,7 +120,6 @@ current_vue = new Vue({
             socket.on('connect', function(){
                 socket.on('last_restart', function(data){
                     self.last_restart = data.date;
-                    self.match_height();
                     self.match_height();
                 })
 

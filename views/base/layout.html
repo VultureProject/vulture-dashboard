@@ -42,7 +42,10 @@
                 <div class="navbar-content">
                     <ul class="nav navbar-top-links">
                         <li>
-                            <a href="/dashboard/"><i class="fa fa-home">&nbsp;&nbsp;</i>Home</a>
+                            <a href="/dashboard/"><i class="fa fa-home">&nbsp;&nbsp;</i>Rsyslog stats</a>
+                        </li>
+                        <li>
+                            <a href="/dashboard/darwin/stats/"><i class="fa fa-signal">&nbsp;&nbsp;</i>Darwin stats</a>
                         </li>
                         <li>
                             <a href="/dashboard/carto"><i class="fa fa-sitemap">&nbsp;&nbsp;</i>Cartography</a>
@@ -152,13 +155,13 @@
         const socket = io.connect(socket_path)
 
         $(function(){
-            $(window).on('blur', function(){
+            /*$(window).on('blur', function(){
                 socket.disconnect();
             })
 
             $(window).on('focus', function(){
                 socket.open();
-            })
+            })*/
 
             $('[data-toggle="tooltip"]').tooltip();
             $('#theme-selector').bootstrapToggle();
