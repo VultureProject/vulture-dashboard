@@ -76,11 +76,10 @@ const sessionMiddleware = session({
     secret: uuid(),
     resave: true,
     saveUninitialized: true,
-    cookie: {maxAge: 86400, expires: 86400},
+    cookie: {maxAge: 7.2e+6},
     store: new redisStore({
-        client: redisClient,
-        ttl: 86400
-    }),
+        client: redisClient
+    })
 })
 
 app.use(sessionMiddleware)
@@ -221,8 +220,6 @@ app.use('/alerts', alertsRouter);
 app.use('/config', configRouter);
 
 app.post(function (err, req, res, next) {
-    console.log(err.message)
-    throw(err)
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};

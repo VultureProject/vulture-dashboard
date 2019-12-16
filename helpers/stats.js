@@ -53,6 +53,7 @@ exports.stats_socket = function(socket){
                     queues[queue_name] = {
                         total_events: 0,
                         old_enqueued: 0,
+                        old_queue_size: 0,
                         max_eps: 0,
                         date_set: [],
                     }
@@ -67,13 +68,18 @@ exports.stats_socket = function(socket){
 
                 if (old_enqueued === 0 || msg.enqueued < old_enqueued){
                     queues[queue_name].old_enqueued = msg.enqueued;
+                    queues[queue_name].old_queue_size = msg.size;
                     return;
                 }
+
+                delta_queue_size = msg.size - queues[queue_name].old_queue_size;
+                queues[queue_name].old_queue_size = msg.size;
 
                 queues[queue_name].total_events = msg.enqueued;
                 var enqueued = msg.enqueued - old_enqueued;
 
                 queues[queue_name].enqueued = enqueued;
+                queues[queue_name].processed = enqueued - delta_queue_size;
                 queues[queue_name].old_enqueued = msg.enqueued;
 
                 var average = parseInt(old_enqueued / nb_seconds_since_restart);
