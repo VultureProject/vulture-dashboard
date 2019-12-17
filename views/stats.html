@@ -41,6 +41,7 @@
                                     <th>Processed</th>
                                     <th>Queue size</th>
                                     <th>Max Queue Size</th>
+                                    <th>Dropped</th>
                                     <th>Queue Full</th>
                                 </tr>
                             </thead>
@@ -54,6 +55,7 @@
                                     <td><label class="label label-info label-block text-lg" v-html="render_number(values.processed)"></label></td>
                                     <td><label class="label label-mint label-block text-lg" v-html="render_number(values.size)"></label></td>
                                     <td><label class="label label-purple label-block text-lg" v-html="render_number(values.maxqsize)"></label></td>
+                                    <td><label class="label label-danger label-block text-lg" v-html="render_number(values.dropped)"></label></td>
                                     <td><label class="label label-danger label-block text-lg" v-html="render_number(values.full)"></label></td>
                                 </tr>
                             </tbody>

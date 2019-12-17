@@ -131,7 +131,7 @@ $(function(){
                     }
 
                     $.post(
-                        '/dashboard/config',
+                        '/dashboard/config/',
                         data,
 
                         function(response){
@@ -146,8 +146,6 @@ $(function(){
                             socket.emit('config', data);
                         }
                     )
-
-
                 }
             }
         })

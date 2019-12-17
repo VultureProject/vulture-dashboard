@@ -7,10 +7,23 @@ module.exports = function(io){
 		res.render('login');
 	});
 
-	router.post('/login', passport.authenticate('local', {
-		successRedirect: '/dashboard/',
-		failureRedirect: '/dashboard/auth/login',
-	  	failureFlash: true,
+	router.post('/login', function(req, res, next){
+		passport.authenticate('local', function(err, user, info){
+			if (err) return next(err);
+
+			if (!user)
+				return res.render('login')
+
+			req.login(user, function(err){
+				if (err) return next(err);
+
+				return res.redirect('/dashboard/')
+			})
+		})(req, res, next);
+	})
+
+	router.post('/login', passport.authenticate('local', function(err, user, info){
+		if (err) return 
 	}));
 
 	router.get('/logout', function(req, res){

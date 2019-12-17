@@ -86,6 +86,7 @@ exports.stats_socket = function(socket){
                 queues[queue_name].processed = (enqueued - delta_queue_size) - message_dropped;
                 queues[queue_name].old_enqueued = msg.enqueued;
                 queues[queue_name].old_full = msg.full;
+                queues[queue_name].dropped = message_dropped;
 
                 var average = parseInt(old_enqueued / nb_seconds_since_restart);
 
