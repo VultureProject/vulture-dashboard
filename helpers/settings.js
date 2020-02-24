@@ -14,7 +14,7 @@ var settings = {
     redis_host: "127.0.0.1",
     redis_port: 6379,
     impcap_publisher: "vlt.rsyslog.impcap",
-    stats_publisher: "vlt.rsyslog.stats",
+    stats_publisher: "vlt.rsyslog.pstats",
     darwin_stats_publisher: "vlt.darwin.stats",
     darwin_alerts_publisher: "vlt.darwin.alerts",
     ip_filter_keys: ['net_src_ip', 'net_dst_ip'],
