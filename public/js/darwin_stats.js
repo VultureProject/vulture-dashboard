@@ -149,8 +149,10 @@ current_vue = new Vue({
                     var mem_percent = 0;
 
                     $.each(message, function(filter_name, filter_stats){
-                        cpu_percent += filter_stats.proc_stats.cpu_percent;
-                        mem_percent += filter_stats.proc_stats.memory_percent;
+                        if (filter_stats.status !== "error"){
+                            cpu_percent += filter_stats.proc_stats.cpu_percent;
+                            mem_percent += filter_stats.proc_stats.memory_percent;
+                        }
                     })
 
                     self.gauge_cpu.set(cpu_percent);

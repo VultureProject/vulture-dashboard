@@ -3,7 +3,7 @@ current_vue = new Vue({
     el: '#vue-page',
     delimiters: ['${', '}'],
     data: {
-        logs: []
+        alerts: []
     },
 
     mounted(){
@@ -22,7 +22,7 @@ current_vue = new Vue({
         },
 
         reinitialize(){
-            this.logs = [];
+            this.alerts = [];
         },
 
         format_date(date){
@@ -30,10 +30,10 @@ current_vue = new Vue({
         },
 
         add_table_alert(data){
-            if (this.logs.length === 25)
-                this.logs.pop();
+            if (this.alerts.length === 25)
+                this.alerts.pop();
 
-            this.logs.unshift(data);
+            this.alerts.unshift(data);
         }
     }
 })

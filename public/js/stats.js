@@ -73,7 +73,6 @@ current_vue = new Vue({
         self.bar_eps.setOption(self.option_bar_eps);
         self.init_socket();
 
-
         var opts = {
             lines: 10,
             angle: 0,
@@ -89,7 +88,6 @@ current_vue = new Vue({
             strokeColor: '#FFB300',
             generateGradient: true
         };
-
 
         var target = document.getElementById('gauge-ram');
         self.gauge = new Gauge(target).setOptions(opts);
