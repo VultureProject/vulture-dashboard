@@ -29,7 +29,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="alert in alerts">
-                                        <td v-html="format_date(alert.timestamp)"></td>
+                                        <td v-html="format_date(alert.time)"></td>
                                         <td v-html="format_ip('net_src_ip', alert)"></td>
                                         <td v-html="format_ip('net_dst_ip', alert)"></td>
                                         <td>${alert.net_dst_port}</td>

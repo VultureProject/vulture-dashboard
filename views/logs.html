@@ -29,7 +29,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="log in logs">
-                                        <td v-html="format_date(log.timestamp)"></td>
+                                        <td v-html="format_date(log.time)"></td>
                                         <td v-html="format_ip('net_src_ip', log)"></td>
                                         <td v-html="format_ip('net_dst_ip', log)"></td>
                                         <td>${log.net_dst_port}</td>
