@@ -18,28 +18,25 @@
                                 <thead>
                                     <tr>
                                         <th>Time</th>
+                                        <th>Filter</th>
                                         <th>SRC IP</th>
                                         <th>DST IP</th>
                                         <th>PORT</th>
                                         <th>NET BYTES</th>
                                         <th>TTL</th>
-                                        <th>Country</th>
-                                        <th>City</th>
+                                        <th>Yara Rule</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="alert in alerts">
                                         <td v-html="format_date(alert.time)"></td>
+                                        <td>${alert.filter}</td>
                                         <td v-html="format_ip('net_src_ip', alert)"></td>
                                         <td v-html="format_ip('net_dst_ip', alert)"></td>
                                         <td>${alert.net_dst_port}</td>
                                         <td>${alert.net_bytes_total}</td>
                                         <td>${alert.net_ttl}</td>
-                                        <td>
-                                            <img :src="src_flag(alert.iso_code)"/>&nbsp;&nbsp;
-                                            ${alert.country}
-                                        </td>
-                                        <td><span v-if="alert.city">${alert.city}</span></td>
+                                        <td>${alert.yara_match}</td>
                                     </tr>
                                 </tbody>
                             </table>

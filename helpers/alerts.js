@@ -7,7 +7,6 @@ exports.alerts_socket = function(socket){
 
     redis_subscriber_alert.on('message', function(channel, message){
         message = JSON.parse(message);
-        console.log(messages)
 
         if (helper.apply_filter(message, socket.handshake.session.filter)){
             socket.emit('message.alerts', message)
