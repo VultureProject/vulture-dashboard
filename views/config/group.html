@@ -1,0 +1,12 @@
+
+<div class="row" id="row-group">
+    <div class="col-md-12">
+        <p class="pad-top text-main text-xlg text-uppercase text-bold">Group by</p>
+    </div>
+    <div class="col-md-12 form-group">
+        <label>Group by tags:</label>
+        <select class="form-control" id="group_by">
+            <option v-for="tag in tags" :selected="render_selected(tag)" :value="tag">${tag}</option>
+        </select>
+    </div>
+</div>

@@ -1,0 +1,67 @@
+{% extends 'base/layout.html' %}
+
+{% block config %}
+    {% include 'config/filter.html' %}
+{% endblock %}
+
+{% block content %}
+    
+    <div id="page-content">
+        <br/>
+        {% include "search.html" %}
+        <div class="row" id="vue-page">
+            <div class="col-md-12">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="table-responsive graph">
+                            <table class="table table-striped" id="table-logs">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>SRC IP</th>
+                                        <th>DST IP</th>
+                                        <th>PORT</th>
+                                        <th>NET BYTES</th>
+                                        <th>TTL</th>
+                                        <th>Country</th>
+                                        <th>City</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="log in logs">
+                                        <td v-html="format_date(log.time)"></td>
+                                        <td v-html="format_ip('net_src_ip', log)"></td>
+                                        <td v-html="format_ip('net_dst_ip', log)"></td>
+                                        <td>${log.net_dst_port}</td>
+                                        <td>${log.net_bytes_total}</td>
+                                        <td>${log.net_ttl}</td>
+                                        <td>
+                                            <img :src="src_flag(log.iso_code)"/>&nbsp;&nbsp;
+                                            ${log.country}
+                                        </td>
+                                        <td><span v-if="log.city">${log.city}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>
+
+{% endblock %}
+
+{% block css_include %}
+
+{% endblock %}
+
+{% block js_include %}  
+    <script src="/dashboard/static/js/logs.js"></script>
+{% endblock %}
+
+{% block jquery_code %}
+
+{% endblock %}
+
+

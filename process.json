@@ -1,0 +1,17 @@
+{
+   "apps" : [{
+      "name" : "Vulture-Dashboard",
+      "script" : "app.js"
+   }],
+   "deploy" : {
+     // "production" is the environment name
+     "production" : {
+       "user" : "vlt-os",
+       "host" : ["127.0.0.6"],
+       "ref"  : "origin/master",
+       "repo" : "https://github.com/VultureProject/vulture-dashboard",
+       "path" : "/home/vlt-os/vulture-dashboard",
+       "post-deploy" : "npm install"
+      },
+   }
+}

@@ -1,0 +1,67 @@
+.brand-icon{
+    margin-top: -12px;
+    margin-left: 2px;
+    width: 220px;
+    height: auto !important;
+}
+
+.pad-top-lg{
+    padding-top: 30px;
+}
+
+.form-control{
+    background-color: #fff;
+    color: #000;
+    border-radius: 0px;
+}
+
+.tag-editor{
+    line-height: 25px;
+}
+
+.nano-content{
+    padding-left: 10px;
+    padding-right: 15px;
+}
+
+.text-xlg{
+    font-size: 1.5em;
+}
+
+code{
+    color: #F47708 !important;
+}
+
+#sql-query-div{
+    display: none;
+}
+
+.btn-light{
+    background-color: #fff;
+    color: #000;
+}
+
+.panel-dark p{
+    color: #fff !important;
+}
+
+#help_text_number_of_nodes{
+    display: none;
+}
+
+#login-panel{
+    background-color: #fff !important;
+    width: 400px;
+}
+
+#logo_signin{
+    width: 200px;
+}
+
+#page-content{
+    padding: 0 10px !important;
+}
+
+#vue-page{
+    padding: 0 10px;
+}

@@ -1,0 +1,93 @@
+{% extends 'base/layout.html' %}
+
+{% block content %}
+
+    <div id="page-content">
+    	<br/>
+    	<div class="row match-height">
+            <div class="col-md-2">
+                <div class="panel">
+                    <div class="pad-all text-center">
+                        <canvas id="gauge-cpu" height="180" class="canvas-responsive"></canvas>
+                        <p>
+                            <span id="gauge-cpu-text" class="text-lg text-semibold"></span>%
+                        </p>
+                        <p class="h5 text-thin mar-no">CPU Usage</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="panel">
+                    <div class="pad-all text-center">
+                        <canvas id="gauge-mem" height="180" class="canvas-responsive"></canvas>
+                        <p>
+                            <span id="gauge-mem-text" class="text-lg text-semibold"></span>%
+                        </p>
+                        <p class="h5 text-thin mar-no">Memory Usage</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="panel">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Filter name</th>
+                                    <th>Status</th>
+                                    <th>Total events</th>
+                                    <th>Current EPS</th>
+                                    <th>Connections</th>
+                                    <th>Alerts</th>
+                                    <th>Errors</th>
+                                    <th>Failures</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(values, filter_name) in filters_values">
+                                    <td class="text-lg">${filter_name}</td>
+                                    <td class="text-lg" v-html="render_status(values.running)"></td>
+                                    <td><label class="label label-success label-block text-lg" v-html="render_number(values.total_received)"></label></td>
+                                    <td><label class="label label-primary label-block text-lg" v-html="render_number(values.received)"></label></td>
+                                    <td><label class="label label-purple label-block text-lg" v-html="render_number(values.connections)"></label></td>
+                                    <td><label class="label label-mint label-block text-lg" v-html="render_number(values.matches)"></label></td>
+                                    <td><label class="label label-warning label-block text-lg" v-html="render_number(values.entryErrors)"></label></td>
+                                    <td><label class="label label-danger label-block text-lg" v-html="render_number(values.failures)"></label></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-area-chart">&nbsp;&nbsp;</i>Message received by seconds</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="bar-received" style="height: 600px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block css_include %}
+
+{% endblock %}
+
+{% block js_include %}
+	<script src="/dashboard/static/plugins/gauge-js/gauge.min.js"></script>
+    <script src="/dashboard/static/js/theme-echarts.js"></script>
+    <script src="/dashboard/static/js/darwin_stats.js"></script>
+{% endblock %}
+
+{% block jquery_code %}
+	var nb_cpus = {{ nb_cpus }};
+{% endblock %}

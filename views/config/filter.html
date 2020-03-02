@@ -1,0 +1,21 @@
+
+<div class="row" id="row-filter">
+    <div class="col-md-12">
+        <p class="pad-top text-main text-xlg text-uppercase text-bold">Filter</p>
+    </div>
+    <div class="col-md-12 form-group">
+        <label>Field:</label>
+        <select id="selected_filter" class="form-control">
+            <option value="">-------</option>
+            <option {% if filter.key_filter === "net_src_ip" %} selected="selected" {% endif %} value="net_src_ip">SOURCE IP</option>
+            <option {% if filter.key_filter === "net_dst_ip" %} selected="selected" {% endif %} value="net_dst_ip">DESTINATION IP</option>
+            <option {% if filter.key_filter === "net_dst_port" %} selected="selected" {% endif %} value="net_dst_port">DESTINATION PORT</option>
+            <option {% if filter.key_filter === "net_ttl" %} selected="selected" {% endif %} value="net_ttl">TTL</option>
+        </select>
+    </div>
+
+    <div class="col-md-12 form-group">
+        <label>Value:</label>
+        <input type="text" class="form-control value_filter" id="tags-filter"/ value="{{ filter.value_filter }}">
+    </div>
+</div>
