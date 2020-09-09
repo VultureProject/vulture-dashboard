@@ -205,7 +205,7 @@ function is_authenticated(req, res, next){
     if (req.user)
         return next();
 
-    return res.redirect('/dashboard/auth/login');
+    return res.redirect('/auth/login');
 }
 
 app.use(is_authenticated);
