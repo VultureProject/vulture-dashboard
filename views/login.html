@@ -6,10 +6,10 @@
   <title>Vulture - Dashboard - Log in</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="/dashboard/static/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/dashboard/static/plugins/font-awesome/css/font-awesome.min.css">
-  <link href="/dashboard/static/css/nifty.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/dashboard/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/plugins/font-awesome/css/font-awesome.min.css">
+  <link href="/static/css/nifty.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -26,7 +26,7 @@
       <div class="cls-content-sm panel" id="login-panel">
         <div class="panel-body">
           <div class="mar-ver">
-            <img src="/dashboard/static/img/vulture-logo.png" id="logo_signin"/>
+            <img src="/static/img/vulture-logo.png" id="logo_signin"/>
 
             <div id="login_header">
                 <h1 class="h3">Login</h1>
@@ -39,7 +39,7 @@
               </div>
             {% endif %}
 
-            <form action="/dashboard/auth/login" method="POST" id="login_form">
+            <form action="/auth/login" method="POST" id="login_form">
                 <div class="form-group text-left">
                   <label>Username:</label>
                     <input type="text" class="form-control" name="username" autofocus>
@@ -57,7 +57,7 @@
     </div>
   </div>
 
-  <script src="/dashboard/static/js/jquery.min.js"></script>
-  <script src="/dashboard/static/js/bootstrap.min.js"></script>
+  <script src="/static/js/jquery.min.js"></script>
+  <script src="/static/js/bootstrap.min.js"></script>
 </body>
 </html>

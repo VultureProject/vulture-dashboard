@@ -49,7 +49,7 @@ current_vue = new Vue({
 
         src_flag(iso_code){
             if (iso_code)
-                return "/dashboard/static/img/flags/" + iso_code.toLowerCase() + ".png";
+                return "/static/img/flags/" + iso_code.toLowerCase() + ".png";
             return "";
         },
 

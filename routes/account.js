@@ -17,7 +17,7 @@ module.exports = function(io){
 			req.login(user, function(err){
 				if (err) return next(err);
 
-				return res.redirect('/dashboard/')
+				return res.redirect('/')
 			})
 		})(req, res, next);
 	})
@@ -28,7 +28,7 @@ module.exports = function(io){
 
 	router.get('/logout', function(req, res){
 		req.session.destroy();
-		res.redirect('/dashboard/');
+		res.redirect('/');
 	})
 
     return router;
